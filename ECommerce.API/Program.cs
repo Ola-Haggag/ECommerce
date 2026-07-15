@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using ECommerce.Infrastructure;
 using ECommerce.API.Extentions;
 using ECommerce.Application;
+using System.Net.NetworkInformation;
+using Microsoft.Extensions.FileProviders;
+using ECommerce.Application.Profiles;
 namespace ECommerce.API
 {
     public class Program
@@ -25,6 +28,8 @@ namespace ECommerce.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.Configure<UrlSettings>(builder.Configuration.GetSection("UrlSettings"));
+
             var app = builder.Build();
 
             await app.MigrationAndSeedAsync();
@@ -36,10 +41,14 @@ namespace ECommerce.API
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath,"Files")),
+                RequestPath = "/Files"
+            });//wwwroot
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
