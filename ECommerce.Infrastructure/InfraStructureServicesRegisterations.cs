@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ECommerce.Infrastructure.Repositories;
+using StackExchange.Redis;
 
 namespace ECommerce.Infrastructure
 {
@@ -27,6 +28,12 @@ namespace ECommerce.Infrastructure
             services.AddKeyedScoped<IDataSeeder,CatalogDataSeeder>("Catalog");
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddSingleton<IConnectionMultiplexer>(opt =>
+            {
+                return ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection"));
+            });
+
+            services.AddScoped<IBasketRepository, BasketRepository>();
 
             return services;
         }

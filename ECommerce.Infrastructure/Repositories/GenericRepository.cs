@@ -53,5 +53,11 @@ namespace ECommerce.Infrastructure.Repositories
             var Result = SpecificationEvaluator.CreateQuery<TEntity, Tkey>(dbContext.Set<TEntity>(), specifications);
             return await Result.FirstOrDefaultAsync(ct);
         }
+
+        public async Task<int> GetProductCountWithSpecificationsAsync(ISpecifications<TEntity, Tkey> specifications, CancellationToken ct = default)
+        {
+            var Result = SpecificationEvaluator.CreateQuery<TEntity, Tkey>(dbContext.Set<TEntity>(), specifications);
+            return await Result.CountAsync(ct);
+        }
     }
 }

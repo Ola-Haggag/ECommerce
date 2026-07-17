@@ -29,7 +29,7 @@ namespace ECommerce.Application.Specifications
         }
         #endregion
 
-
+        #region Ordering
         public Expression<Func<TEntity, object>>? OrderBy { get; private set; }
 
         public void AddOrderBy(Expression<Func<TEntity, object>>? orderBy)
@@ -39,5 +39,21 @@ namespace ECommerce.Application.Specifications
 
         public void AddOrderByDesc(Expression<Func<TEntity, object>>? orderByDesc)
           => OrderByDesc = orderByDesc;
+        #endregion
+
+
+        public int Take { get; private set; }
+
+        public int Skip { get; private set; }
+
+        public bool IsPaginated { get; private set; }
+
+        public void ApplyPagination(int PageSize,int PageIndex)
+        {
+            IsPaginated = true;
+            Take = PageSize;
+            Skip = (PageIndex - 1) * PageSize ;
+        }
+
     }
 }
