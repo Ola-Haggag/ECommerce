@@ -22,7 +22,11 @@ namespace ECommerce.API.Extentions
             //CatalogDataSeeder catalogDataSeeder = new CatalogDataSeeder(DbContext, CatalogLogger);
 
             var seeder = Scope.ServiceProvider.GetRequiredKeyedService<IDataSeeder>("Catalog");
-            await seeder.SeedAsync();
+            await seeder.SeedAsync();   
+            
+            
+            var IdentitySeeder = Scope.ServiceProvider.GetRequiredKeyedService<IDataSeeder>("Identity");
+            await IdentitySeeder.SeedAsync();
         }
     }
 }
